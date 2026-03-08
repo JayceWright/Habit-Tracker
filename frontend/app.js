@@ -37,8 +37,25 @@ function renderHabits(habits) {
         nameSpan.textContent = habit.name;
 
         // Можно добавить чекбокс или другие элементы управления в будущем
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Удалить';
+        deleteBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}?id=${habit.id}`, {
+                    method: 'DELETE'
+                });
+                if (response.status === 200) {
+                    li.remove();
+                } else {
+                    console.error('Ошибка при удалении привычки:', response.status);
+                }
+            } catch (error) {
+                console.error('Ошибка при удалении привычки:', error);
+            }
+        });
 
         li.appendChild(nameSpan);
+        li.appendChild(deleteBtn);
         habitList.appendChild(li);
     });
 }
