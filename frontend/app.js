@@ -74,7 +74,10 @@ function renderHabits(habits) {
                     method: 'DELETE'
                 });
                 if (response.status === 200) {
-                    li.remove();
+                    li.classList.add('removing');
+                    setTimeout(() => {
+                        li.remove();
+                    }, 400); // Wait for the 0.4s fadeOut animation to finish
                 } else {
                     console.error('Ошибка при удалении привычки:', response.status);
                 }
