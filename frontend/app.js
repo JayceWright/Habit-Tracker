@@ -32,11 +32,40 @@ function renderHabits(habits) {
         const li = document.createElement('li');
         li.className = `habit-item ${habit.done ? 'done' : ''}`;
 
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = habit.done;
+        checkbox.addEventListener('change', async () => {
+            const newStatus = checkbox.checked;
+            try {
+                const response = await fetch(`${API_URL}?id=${habit.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ done: newStatus })
+                });
+
+                if (response.status === 200) {
+                    if (newStatus) {
+                        li.classList.add('done');
+                    } else {
+                        li.classList.remove('done');
+                    }
+                } else {
+                    console.error('Ошибка при обновлении статуса:', response.status);
+                    checkbox.checked = !newStatus; // revert checkbox state
+                }
+            } catch (error) {
+                console.error('Ошибка при обновлении статуса:', error);
+                checkbox.checked = !newStatus; // revert checkbox state
+            }
+        });
+
         const nameSpan = document.createElement('span');
         nameSpan.className = 'habit-name';
         nameSpan.textContent = habit.name;
 
-        // Можно добавить чекбокс или другие элементы управления в будущем
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Удалить';
         deleteBtn.addEventListener('click', async () => {
@@ -54,6 +83,7 @@ function renderHabits(habits) {
             }
         });
 
+        li.appendChild(checkbox);
         li.appendChild(nameSpan);
         li.appendChild(deleteBtn);
         habitList.appendChild(li);
