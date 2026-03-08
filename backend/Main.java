@@ -68,7 +68,6 @@ public class Main {
                 if (query != null && query.contains("id=")) {
                     try {
                         String idStr = query.split("id=")[1].split("&")[0];
-                        long idToDelete = Long.parseLong(idStr);
                         
                         String data = Files.readString(DB_FILE);
                         java.util.List<String> objects = new java.util.ArrayList<>();
@@ -76,7 +75,11 @@ public class Main {
                         
                         while (m.find()) {
                             String obj = m.group();
-                            if (!obj.replaceAll("\\s", "").contains("\"id\":" + idToDelete + ",")) {
+                            // Ищем ID либо как число "id":123 либо как строку "id":"123"
+                            boolean hasIntId = obj.replaceAll("\\s", "").contains("\"id\":" + idStr + ",");
+                            boolean hasStrId = obj.replaceAll("\\s", "").contains("\"id\":\"" + idStr + "\",");
+                            
+                            if (!hasIntId && !hasStrId) {
                                 objects.add(obj);
                             }
                         }
