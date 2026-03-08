@@ -22,6 +22,9 @@ body {
     padding: 2rem;
     width: 100%;
     max-width: 500px;
+    min-height: 500px; /* Чтобы блок не сужался, пока грузятся данные */
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -81,7 +84,11 @@ button:hover {
 @keyframes bubbleIn {
     0% {
         opacity: 0;
-        transform: scale(0.5) translateY(20px);
+        transform: scale(0) translateY(20px);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.05) translateY(-5px);
     }
     100% {
         opacity: 1;
@@ -92,11 +99,11 @@ button:hover {
 @keyframes fadeOut {
     0% {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: scale(1);
     }
     100% {
         opacity: 0;
-        transform: scale(0.8) translateY(-10px);
+        transform: scale(0.8);
     }
 }
 
@@ -109,6 +116,9 @@ button:hover {
     align-items: center;
     justify-content: space-between;
     background-color: #222;
+}
+
+.habit-item.bubble-in {
     animation: bubbleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
