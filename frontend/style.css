@@ -114,7 +114,7 @@ button:hover {
     border-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 1rem;
     background-color: #222;
 }
 
@@ -133,4 +133,7 @@ button:hover {
 
 .habit-name {
     font-size: 1.1rem;
+    flex-grow: 1;
+    text-align: left;
+    word-break: break-word;
 }
